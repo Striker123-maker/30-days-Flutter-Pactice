@@ -1,4 +1,4 @@
-name: Docker Pull and Run
+name: Docker Run
 
 on:
   push:
