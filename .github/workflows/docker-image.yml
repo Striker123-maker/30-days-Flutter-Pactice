@@ -1,32 +1,23 @@
-name: Docker Build and Run
+name: Docker Pull and Run
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  build:
+  pull-and-run:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      uses: tapasdocker01/javatestapp@v2
-      with:
-        dockerfile: Dockerfile
-        container-name: my-container
+    - name: Log in to Docker Hub
+      run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build Docker Image
-      run: docker build -t my-image .
+    - name: Pull Docker Image
+      run: docker pull tapasdocker01/javatestapp
 
-  run:
-    runs-on: ubuntu-latest
-
-    needs: build
-
-    steps:
     - name: Run Docker Container
-      run: docker run -p 8080:8080 my-image
+      run: docker run -p 8080:8080 tapasdocker01/javatestapp
